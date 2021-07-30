@@ -1,0 +1,130 @@
+#!/usr/bin/python3
+# This Programm Write by Mr.nope
+# Fire v1.3.0
+import os
+import time
+import ctypes
+import sys
+import subprocess
+import platform
+from getpass import getpass
+try:
+    import smtplib 
+    from email.message import EmailMessage
+except ImportError:
+    os.system("pip install smtplib")
+try:
+    from colorama import Fore,init
+    init()
+except ImportError:
+    os.system("pip3 install colorama")
+system = platform.uname()[0]
+End = '\033[0m'
+Run_Err_2 = "\nPlease, Run This Programm on Linux, MacOS!\n"
+banner = Fore.YELLOW + """
+_____ _           
+|   __|_|___ ___   """ + Fore.RED + "Version: " + Fore.GREEN + "1.3.0" + Fore.YELLOW + """
+|   __| |  _| -_|  
+|__|  |_|_| |___|  
+                   """ + End
+Run_Err = "\nPlease, Run This Programm on Linux, Windows or MacOS!\n"
+fire_arg_help = """
+Fire Argument:
+                  --help          Help
+
+                  --menu          Start Fire Menu
+                  
+                  --fire          Start Fire
+                  
+                  --fire --help   Fire Help\n"""
+def title():
+    if system == 'Linux':
+        os.system("printf '\033]2;Fire-Email\a'")
+    elif system == 'Windows':
+        ctypes.windll.kernel32.SetConsoleTitleW("Fire-Email")
+    else:
+        print(Run_Err)
+        sys.exit()
+def cls():
+    if system == 'Linux':
+        os.system("clear")
+    elif system == 'Windows':
+        os.system("cls")
+    else:
+        print(Run_Err)
+        sys.exit()
+def main():
+    title()
+    cls()
+    print(banner)
+    Addr = input("\nEnter Your Gmail Address: ")
+    time.sleep(0.50)
+    Password = getpass("\nEnter Password: ")
+    time.sleep(1)
+    msg = EmailMessage()
+    sub = input("\nEnter Subject: ")
+    time.sleep(0.25)
+    msg['Subject'] = sub
+    msg['From'] = Addr
+    msg['To'] = input("\nTo: ")
+    co = input("\nEnter Content: ")
+    time.sleep(0.25)
+    msg.set_content(co)
+    time.sleep(0.25)
+    with smtplib.SMTP_SSL('smtp.gmail.com',465) as s: 
+        s.login(Addr,Password) 
+        s.send_message(msg) 
+def arg():
+    if sys.argv[1] == '--help':
+        print(fire_arg_help)
+        sys.exit()
+    elif sys.argv[1] == '--menu':
+        main()
+    elif sys.argv[1] == '--fire':
+        if sys.argv[6] == 'message':
+            Addr = sys.argv[2]
+            Password = sys.argv[3]  
+            msg = EmailMessage()
+            msg['Subject'] = sys.argv[7]
+            msg['From'] = sys.argv[5]
+            msg['To'] = sys.argv[4]
+            co = sys.argv[8]
+            msg.set_content(co)
+            with smtplib.SMTP_SSL('smtp.gmail.com',465) as s: 
+                s.login(Addr,Password) 
+                s.send_message(msg)
+        elif sys.argv[2] == '--help':
+            print("\npython3 fire <Your Gmail Address> <Password> <To> <from> --message <Subject> <Content>\n")
+            sys.exit()
+        else:
+            print("\npython3 fire <Your Gmail Address> <Password> <To> <from> --message <Subject> <Content>\n")
+            sys.exit()
+    elif sys.argv[1] == '--banner':
+        if system == 'Linux':
+            title()
+            cls()
+            os.system("cacafire")
+            try1()
+        elif system == 'Windows':
+            print(Run_Err_2)
+            sys.exit()
+        else:
+            print(Run_Err_2)
+            sys.exit()
+    else:
+        print("""\ninvalid argument\n
+Usage: 
+     fire --help\n""")
+        sys.exit()
+def try1():
+    try_to_exit = input("\npress Enter...")
+    if try_to_exit == '':
+        sys.exit()
+    else:
+        sys.exit()
+if __name__ == '__main__':
+    try:
+        arg()
+    except IndexError:
+        print("\nUsage: python3 fire --help")
+        sys.exit()
